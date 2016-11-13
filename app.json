@@ -1,0 +1,7 @@
+{
+  "name": "Push notification every 15 minute",
+  "description": "A push notification app",
+  "repository": "https://github.com/heroku/mi-node-app",
+  "keywords": ["node", "express", "static"],
+  "image": ""
+}
