@@ -6,6 +6,8 @@ var cron = require('cron');
 var q = require('q');
 var moment = require('moment');
 
+require('heroku-self-ping')("https://mi-node-app.herokuapp.com/");
+
 var serverKey = 'AIzaSyAhvHUYy5L1pTb7F-UGEnEGKbbs9vqn_BY';
 var fcm = new FCM(serverKey);
 var app = express();
