@@ -1,0 +1,31 @@
+{
+  "name": "miapp",
+  "version": "0.2.5",
+  "description": "A push notification app",
+  "engines": {
+    "node": "5.9.1"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cron": "^1.1.1",
+    "ejs": "2.4.1",
+    "express": "4.13.3",
+    "fcm-node": "^1.0.15",
+    "firebase": "^3.5.3",
+    "moment": "^2.16.0",
+    "q": "^1.4.1",
+    "request": "^2.78.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heroku/node-js-getting-started"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "license": "MIT"
+}
