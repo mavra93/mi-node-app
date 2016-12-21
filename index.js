@@ -35,6 +35,7 @@ function prepareNotificationsForSend(quotes) {
 
     for (var key in quotes) {
         if (!quotes.hasOwnProperty(key)) continue;
+        quotes[key].id = key;
         finalQuotes.push(quotes[key]);
         deferred.resolve(finalQuotes);
 
@@ -65,6 +66,15 @@ function getUsers() {
     return deferred.promise;
 }
 
+function setCounter(id) {
+    var quotesRef = firebase.database().ref("quotes/" + id);
+    return quotesRef.once("value").then(function(data) {
+        var notify = data.val();
+        notify.counter = notify.counter + 1;
+        quotesRef.set(notify);
+    });
+}
+
 function listenForNotificationRequests(now) {
     getNotifications().then(function (finalQuotes) {
         getUsers().then(function (users) {
@@ -72,13 +82,14 @@ function listenForNotificationRequests(now) {
                 var notifyTime = moment.unix(notify.at);
                 if (notify.to !== "") {
                   users.forEach(function(user) {
-                      if(user.uid === notify.author && (now.hour() === notifyTime.hour() && now.minute() === notifyTime.minute())) {
+                      if(user.uid === notify.author && (now.hour() === notifyTime.hour() && now.minute() === notifyTime.minute()) && ((notify.repeat === "once" && notify.counter === 0) || (notify.repeat === "everyDay"))) {
                           var notification = {
                               to: notify.to, // required fill with device token or topics
                               notification: {
                                   title: user.username,
                                   body: notify.message
-                              }
+                              },
+                              id: notify.id
                           };
                           sendNotification(notification);
                       }
@@ -102,6 +113,7 @@ function sendNotification(notification) {
         if (err) {
             console.log("Something has gone wrong!");
         } else {
+            setCounter(notification.id);
             console.log("Successfully sent with response: ", response);
         }
     });
